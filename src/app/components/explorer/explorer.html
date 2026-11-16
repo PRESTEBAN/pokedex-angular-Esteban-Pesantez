@@ -1,0 +1,44 @@
+<section class="panel">
+  <h2>Pokédex</h2>
+
+  <div class="filters">
+    <input
+      type="text"
+      placeholder="Buscar por nombre o número..."
+      [ngModel]="query()"
+      (ngModelChange)="onQuery($event)"
+    />
+    <select [ngModel]="selectedType()" (ngModelChange)="onType($event)">
+      <option value="">Todos los tipos</option>
+      @for (t of types(); track t) {
+        <option [value]="t">{{ t }}</option>
+      }
+    </select>
+  </div>
+
+  @if (loading()) {
+    <p class="msg">Cargando...</p>
+  }
+
+  @if (error()) {
+    <p class="msg error">{{ error() }} <button (click)="init()">Reintentar</button></p>
+  }
+
+  @if (!loading() && !error() && filtered().length === 0) {
+    <p class="msg">Sin resultados.</p>
+  }
+
+  <div class="grid">
+    @for (p of shown(); track p.id) {
+      <button class="card" (click)="pick.emit(p.id)">
+        <img [src]="art(p.id)" [alt]="p.name" loading="lazy" />
+        <span class="num">#{{ p.id }}</span>
+        <strong>{{ p.name }}</strong>
+      </button>
+    }
+  </div>
+
+  @if (shown().length < filtered().length) {
+    <button class="more" (click)="visible.set(visible() + 24)">Cargar más</button>
+  }
+</section>

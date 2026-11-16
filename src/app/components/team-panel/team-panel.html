@@ -1,0 +1,37 @@
+<section class="panel">
+  <h2>Mi equipo ({{ team.members().length }}/6)</h2>
+
+  @if (team.members().length === 0) {
+    <p class="msg">Aún no tienes Pokémon en tu equipo.</p>
+  }
+
+  @for (m of team.members(); track m.id) {
+    <div class="member">
+      <img [src]="art(m.id)" [alt]="m.name" />
+      <div class="member-info" (click)="pick.emit(m.id)">
+        <strong>{{ m.name }}</strong>
+        <div class="chips">
+          @for (t of m.types; track t) {
+            <span class="chip" [style.background]="color(t)">{{ t }}</span>
+          }
+        </div>
+        <small>Total base: {{ m.total }}</small>
+      </div>
+      <button class="remove" (click)="team.remove(m.id)" aria-label="Quitar">✕</button>
+    </div>
+  }
+
+  @if (team.members().length > 0) {
+    <div class="summary">
+      <p><b>Promedio de stats:</b> {{ team.average() }}</p>
+      <p><b>Más fuerte:</b> {{ team.strongest()?.name }} ({{ team.strongest()?.total }})</p>
+      <p><b>Tipos cubiertos ({{ team.uniqueTypes().length }}):</b></p>
+      <div class="chips">
+        @for (t of team.uniqueTypes(); track t) {
+          <span class="chip" [style.background]="color(t)">{{ t }}</span>
+        }
+      </div>
+      <button (click)="team.clear()">Vaciar equipo</button>
+    </div>
+  }
+</section>

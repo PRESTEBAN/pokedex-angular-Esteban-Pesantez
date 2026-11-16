@@ -1,0 +1,53 @@
+<section class="panel">
+  @if (!id()) {
+    <p class="msg">Selecciona un Pokémon de la lista para ver su detalle.</p>
+  } @else if (loading()) {
+    <p class="msg">Cargando detalle...</p>
+  } @else if (error()) {
+    <p class="msg error">{{ error() }}</p>
+  } @else if (pokemon(); as p) {
+    <div class="detail-head">
+      <img [src]="art(p.id)" [alt]="p.name" />
+      <div>
+        <h2>#{{ p.id }} {{ p.name }}</h2>
+        <p class="genus">{{ genus() }}</p>
+        <div class="chips">
+          @for (t of p.types; track t.slot) {
+            <span class="chip" [style.background]="color(t.type.name)">{{ t.type.name }}</span>
+          }
+        </div>
+        <p>{{ description() }}</p>
+        <p class="small">Altura: {{ p.height / 10 }} m · Peso: {{ p.weight / 10 }} kg</p>
+        <p class="small">
+          Habilidades:
+          @for (a of p.abilities; track a.ability.name; let last = $last) {
+            {{ a.ability.name }}{{ a.is_hidden ? ' (oculta)' : '' }}{{ last ? '' : ', ' }}
+          }
+        </p>
+      </div>
+    </div>
+
+    <h3>Estadísticas base ({{ total() }})</h3>
+    @for (s of stats(); track s.label) {
+      <div class="stat">
+        <span>{{ s.label }}</span>
+        <div class="bar"><div class="fill" [style.width.%]="s.pct"></div></div>
+        <b>{{ s.value }}</b>
+      </div>
+    }
+
+    <h3>Cadena evolutiva</h3>
+    <div class="evos">
+      @for (e of evolutions(); track e.id) {
+        <button class="evo" [class.current]="e.id === p.id" (click)="pick.emit(e.id)">
+          <img [src]="art(e.id)" [alt]="e.name" loading="lazy" />
+          <span>{{ e.name }}</span>
+        </button>
+      }
+    </div>
+
+    <button class="primary" [disabled]="team.has(p.id) || team.full()" (click)="addToTeam(p)">
+      {{ team.has(p.id) ? 'Ya está en tu equipo' : team.full() ? 'Equipo completo (6/6)' : 'Agregar a mi equipo' }}
+    </button>
+  }
+</section>

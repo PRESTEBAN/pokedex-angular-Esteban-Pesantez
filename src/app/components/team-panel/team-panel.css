@@ -1,0 +1,32 @@
+.member {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #334155;
+}
+
+.member img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.member-info {
+  flex: 1;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.remove {
+  padding: 0.2rem 0.5rem;
+}
+
+.summary {
+  margin-top: 0.75rem;
+}
+
+.summary p {
+  margin: 0.25rem 0;
+  text-transform: capitalize;
+}
