@@ -21,7 +21,7 @@ Aplicación web hecha con Angular que consume PokéAPI para explorar Pokémon y 
 npm install
 ng serve
 ```
-Abrir http://localhost:4200
+Abrir https://pokedex-angular-esteban-pesantez.vercel.app/
 
 ## Sitio desplegado
 URL_DE_VERCEL
